@@ -51,7 +51,7 @@ class GuestBookApplicationTests {
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
 		MockHttpServletResponse response = result.getResponse();
-		assertEquals(200, response.getStatus());
+		assertEquals(400, response.getStatus());
 	}
 
 	// updateUserEvent
