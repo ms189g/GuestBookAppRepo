@@ -1,5 +1,6 @@
 package com.assignment.guestbook.repositories;
 
+import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public interface UserEventsRepository extends CrudRepository<UserEventsEntity, I
 	 
 	 @Query("SELECT a FROM UserEventsEntity a WHERE a.id=:user_id")
 	 UserEventsEntity fetchUserById(@Param("user_id") Integer user_id);
+	 
+	 @Query("SELECT a.picByte FROM UserEventsEntity a WHERE a.id=:user_id")
+	 Blob readImage(@Param("user_id") Integer user_id);
 		
 		@Transactional
 		@Modifying

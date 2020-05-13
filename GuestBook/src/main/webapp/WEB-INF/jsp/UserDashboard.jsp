@@ -13,7 +13,6 @@ function editUserNowFxn(id, source) {
 
 	document.getElementById("editUser").value=id;
 	
-	alert("Value is:"+document.getElementById("editUser").value);
 	if(source.localeCompare("edit") !=0){
 		document.getElementById("formId").action="deleteUser";
 	}
@@ -32,11 +31,11 @@ function editUserNowFxn(id, source) {
 <input type="hidden" name="lastName" value="${lastName}" />
 
 <div align="right">
-	<a href="/guestbook/">Log Off</a>
+	<a href="/guestbook/"><b>Log Off</b></a>
 </div>
 
 <center>
-			<h2><b>Welcome, ${firstName} ${lastName}</b></h2>
+			<h1><b>Welcome, ${firstName} ${lastName}</b></h1>
 			<h3 color:#FF0000">${userMessage}</h3>
 			<table border="1" width="30%" cellpadding="3">
 				<thead>
@@ -47,19 +46,19 @@ function editUserNowFxn(id, source) {
 				<tbody>
 					<tr>
 						<td>Event Name</td>
-						<td><input type="text" name="eventName" value="" /></td>
+						<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="eventName" value="" /></td>
 					</tr>
 					<tr>
 						<td>Event Date</td>
-						<td><input type="date" id="birthday" name="eventDate"></td>
+						<td><input type="date" style="background-color:rgba(0, 0, 0, 0);" id="birthday" name="eventDate"></td>
 					</tr>
 					<tr>
 						<td>Notes</td>
-						<td><textarea rows="5" cols="40" name="notes">Add Notes to your Event...</textarea></td>
+						<td><textarea rows="5" style="background-color:rgba(0, 0, 0, 0);" cols="40" name="notes">Add Notes to your Event...</textarea></td>
 					</tr>
 					<tr>
 						<td>Upload an Image</td>
-						<td><input type="file" id="img" name="img" accept="image/*"></td>
+						<td><input type="file" style="background-color:rgba(0, 0, 0, 0);" id="img" name="img" accept="image/*"></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="right"><input type="submit" align="right" value="Post" /></td>
@@ -86,7 +85,8 @@ function editUserNowFxn(id, source) {
                     <td><c:out value="${user.notes}" /></td>
                     <c:if test="${user.fileName != null}">  
                     <td>
-                    <img id="ItemPreview" height="42" width="42" src="data:image/png;base64,"+${user.picByte} /></td>
+                    
+                    <a href="/guestbook/readImage?userId=${user.id}">View Image</a></td>
                     </c:if>
                 </tr>
             </c:forEach>

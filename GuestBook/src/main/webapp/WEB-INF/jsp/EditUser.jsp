@@ -18,24 +18,24 @@
 			<table style="width: 50%">
 				<tr>
 					<td>User Name: </td>
-					<td><input type="text" name="userName" value="${userDetails.userName}"/></td>
+					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="userName" value="${userDetails.userName}"/></td>
 				</tr>
 				<tr>
 					<td>Event Name: </td>
-					<td><input type="text" name="eventName" value="${userDetails.eventName}"/></td>
+					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="eventName" value="${userDetails.eventName}"/></td>
 				</tr>
 				<tr>
 					<td>Event Date: </td>
-					<td><input type="text" name="eventDate" value="${userDetails.eventDate}"/></td>
+					<td><input type="date" style="background-color:rgba(0, 0, 0, 0);" name="eventDate" value="${userDetails.eventDate}"/></td>
 				</tr>
 				<tr>
 					<td>Event Notes: </td>
-					<td><textarea rows="5" cols="40" name="notes">${userDetails.notes}</textarea>
+					<td><textarea rows="5" style="background-color:rgba(0, 0, 0, 0);" cols="40" name="notes">${userDetails.notes}</textarea>
 					</td>
 				</tr>
 				<tr>
 					<td>Image FileName: </td>
-					<td><input type="text" name="fileName" value="${userDetails.fileName}"/></td>
+					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="fileName" value="${userDetails.fileName}"/></td>
 				</tr>
 			</table>
 			<br/><br/>

@@ -1,8 +1,14 @@
 package com.assignment.guestbook.controllers;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +28,10 @@ import com.assignment.guestbook.entities.GuestBookEntity;
 import com.assignment.guestbook.entities.UserEventsEntity;
 import com.assignment.guestbook.repositories.GuestBookRepository;
 import com.assignment.guestbook.repositories.UserEventsRepository;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 @Controller
 @RequestMapping(path = "/guestbook")
@@ -92,7 +100,6 @@ public class GuestBookController {
 
 		guestBookRepository.save(n);
 
-		System.out.println("Record svaed to DB...");
 		model.addAttribute("userName", userName);
 		return new ModelAndView("thankyou");
 	}
@@ -116,8 +123,29 @@ public class GuestBookController {
 		
 		UserEventsEntity userDetails = userEventsRepository.fetchUserById(Integer.parseInt(userId));
 		model.addAttribute("userDetails", userDetails);
-		System.out.println("User id: "+ userDetails);
 		return new ModelAndView("EditUser");
+	}
+	
+	@RequestMapping(path = "/readImage")
+	public ModelAndView readImage(Model model, @RequestParam String userId) throws Exception {
+
+		Blob blobImage = userEventsRepository.readImage(Integer.parseInt(userId));
+
+		
+		 InputStream binaryStream = blobImage.getBinaryStream(1, blobImage.length());
+		 
+		 int ch; char[] charArray = new char[1000000]; int i = 0; while ((ch =
+		 binaryStream.read()) != -1) { charArray[i] = (char) ch; i++; }
+		
+
+		String str = charArray.toString();
+
+		byte[] bdata = str.getBytes();
+
+		model.addAttribute("binaryData", bdata);
+		model.addAttribute("message", "Image retrieved from DB.");
+		
+		return new ModelAndView("RenderImage");
 	}
 
 	@PostMapping(path = "/approveRecord")
@@ -177,7 +205,12 @@ public class GuestBookController {
 			uEvents.setNotes(notes);
 			
 			if(img.getSize() > 0) {
-				uEvents.setPicByte(img.getBytes());
+				
+				Blob bImage = null;
+						
+				 bImage = new SerialBlob(img.getBytes());
+				
+				uEvents.setPicByte(bImage);
 				uEvents.setFileName(img.getOriginalFilename());
 			}
 			else {
@@ -185,10 +218,8 @@ public class GuestBookController {
 				uEvents.setFileName(null);
 			}
 			
-			System.out.println("Image byte: "+img.getSize()+"------"+img.getBytes());
 			uEvents.setIsApproved("Not Approved");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -210,7 +241,6 @@ public class GuestBookController {
 	public ModelAndView validateUser(Model model, @RequestParam String userName, 
 			@RequestParam String password) {
 
-		System.out.println("password svaed to DB..." + password);
 		GuestBookEntity ge = guestBookRepository.fetchUser(userName);
 
 		if (null != ge && ge.getPassword().equals(password)) {

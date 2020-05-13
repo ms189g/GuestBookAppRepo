@@ -1,5 +1,6 @@
 package com.assignment.guestbook.entities;
 
+import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ public class UserEventsEntity {
 	private String fileName;
 
 	@Column(name = "picByte", length = 100000)
-	private byte[] picByte;
+	private Blob picByte;
 
 	@Column(name = "IS_APPROVED", length = 50)
 	private String isApproved;
@@ -83,11 +84,11 @@ public class UserEventsEntity {
 		this.fileName = fileName;
 	}
 	
-	public byte[] getPicByte() {
+	public Blob getPicByte() {
 		return picByte;
 	}
 
-	public void setPicByte(byte[] picByte) {
+	public void setPicByte(Blob picByte) {
 		this.picByte = picByte;
 	}
 
