@@ -46,19 +46,19 @@ function editUserNowFxn(id, source) {
 				<tbody>
 					<tr>
 						<td>Event Name</td>
-						<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="eventName" value="" /></td>
+						<td><input type="text"  name="eventName" value="" /></td>
 					</tr>
 					<tr>
 						<td>Event Date</td>
-						<td><input type="date" style="background-color:rgba(0, 0, 0, 0);" id="birthday" name="eventDate"></td>
+						<td><input type="date"  id="birthday" name="eventDate"></td>
 					</tr>
 					<tr>
 						<td>Notes</td>
-						<td><textarea rows="5" style="background-color:rgba(0, 0, 0, 0);" cols="40" name="notes">Add Notes to your Event...</textarea></td>
+						<td><textarea rows="5"  cols="40" name="notes">Add Notes to your Event...</textarea></td>
 					</tr>
 					<tr>
 						<td>Upload an Image</td>
-						<td><input type="file" style="background-color:rgba(0, 0, 0, 0);" id="img" name="img" accept="image/*"></td>
+						<td><input type="file"  id="img" name="img" accept="image/*"></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="right"><input type="submit" align="right" value="Post" /></td>

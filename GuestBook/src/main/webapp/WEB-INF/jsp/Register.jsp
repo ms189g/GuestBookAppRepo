@@ -14,27 +14,27 @@
 			<table style="with: 50%">
 				<tr>
 					<td>First Name: </td>
-					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="firstName" /></td>
+					<td><input type="text"  name="firstName" /></td>
 				</tr>
 				<tr>
 					<td>Last Name: </td>
-					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="lastName" /></td>
+					<td><input type="text"  name="lastName" /></td>
 				</tr>
 				<tr>
 					<td>Age: </td>
-					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="age" /></td>
+					<td><input type="text"  name="age" /></td>
 				</tr>
 				<tr>
 					<td>UserName: </td>
-					<td><input type="text" style="background-color:rgba(0, 0, 0, 0);" name="userName" /></td>
+					<td><input type="text"  name="userName" /></td>
 				</tr>
 					<tr>
 					<td>Password: </td>
-					<td><input type="password" style="background-color:rgba(0, 0, 0, 0);" name="password" /></td>
+					<td><input type="password"  name="password" /></td>
 				</tr>
 				<tr>
 					<td>Address: </td>
-					<td><textarea rows="5" style="background-color:rgba(0, 0, 0, 0);" cols="40" name="address">Enter your address..</textarea></td>
+					<td><textarea rows="5"  cols="40" name="address">Enter your address..</textarea></td>
 				</tr>
 			</table>
 			<input type="submit" value="Submit" align="right"/>

@@ -1,26 +1,23 @@
 package com.assignment.guestbook.controllers;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Blob;
-import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,10 +25,6 @@ import com.assignment.guestbook.entities.GuestBookEntity;
 import com.assignment.guestbook.entities.UserEventsEntity;
 import com.assignment.guestbook.repositories.GuestBookRepository;
 import com.assignment.guestbook.repositories.UserEventsRepository;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 @Controller
 @RequestMapping(path = "/guestbook")
@@ -41,28 +34,27 @@ public class GuestBookController {
 
 	@Autowired
 	private UserEventsRepository userEventsRepository;
-	
+
 	private static final Logger LOGGER = LogManager.getLogger(GuestBookController.class);
-	
+
 	@RequestMapping("/")
 	public ModelAndView showLoginPage(Model model) {
-		
+
 		LOGGER.info("Inside showLoginPage");
 		model.addAttribute("message", "Welcome to GuestBook Application");
-		
+
 		try {
-		GuestBookEntity n = new GuestBookEntity();
+			GuestBookEntity n = new GuestBookEntity();
 
-		n.setFirstName("Administrator");
-		n.setLastName("Administrator");
-		n.setUserName("admin");
-		n.setPassword("admin");
-		n.setAddress("DummyAddr");
-		n.setAge(100);
+			n.setFirstName("Administrator");
+			n.setLastName("Administrator");
+			n.setUserName("admin");
+			n.setPassword("admin");
+			n.setAddress("DummyAddr");
+			n.setAge(100);
 
-		guestBookRepository.save(n);
-		}
-		catch(Exception e) {
+			guestBookRepository.save(n);
+		} catch (Exception e) {
 		}
 		return new ModelAndView("login");
 	}
@@ -72,13 +64,13 @@ public class GuestBookController {
 		model.addAttribute("message", "Please Enter the Following Details");
 		return new ModelAndView("Register");
 	}
-	
+
 	@PostMapping("/deleteUser")
 	public ModelAndView deleteUser(Model model, @RequestParam String userId) {
 
 		userEventsRepository.deleteById(Integer.parseInt(userId));
 
-		List<UserEventsEntity> allUsers = (List<UserEventsEntity>)userEventsRepository.findAll();
+		List<UserEventsEntity> allUsers = (List<UserEventsEntity>) userEventsRepository.findAll();
 		model.addAttribute("allUsersList", allUsers);
 		model.addAttribute("message", "Record Deleted Successfully !!");
 		model.addAttribute("firstName", "Admin");
@@ -87,7 +79,8 @@ public class GuestBookController {
 
 	@PostMapping(path = "/registerUser")
 	public ModelAndView registerUser(Model model, @RequestParam String firstName, @RequestParam String lastName,
-			@RequestParam String userName, @RequestParam String password, @RequestParam String address , @RequestParam String age) {
+			@RequestParam String userName, @RequestParam String password, @RequestParam String address,
+			@RequestParam String age) {
 
 		GuestBookEntity n = new GuestBookEntity();
 
@@ -108,54 +101,44 @@ public class GuestBookController {
 	public ModelAndView backToLogin(Model model) {
 		return new ModelAndView("login");
 	}
-	
+
 	@RequestMapping(path = "/backToDashboard")
 	public ModelAndView backToDashboard(Model model) {
-		
-		List<UserEventsEntity> allUsers = (List<UserEventsEntity>)userEventsRepository.findAll();
+
+		List<UserEventsEntity> allUsers = (List<UserEventsEntity>) userEventsRepository.findAll();
 		model.addAttribute("allUsersList", allUsers);
 		model.addAttribute("firstName", "Admin");
 		return new ModelAndView("dashboard");
 	}
-	
+
 	@RequestMapping(path = "/editUser")
 	public ModelAndView editUser(Model model, @RequestParam String userId) {
-		
+
 		UserEventsEntity userDetails = userEventsRepository.fetchUserById(Integer.parseInt(userId));
 		model.addAttribute("userDetails", userDetails);
 		return new ModelAndView("EditUser");
 	}
-	
+
 	@RequestMapping(path = "/readImage")
 	public ModelAndView readImage(Model model, @RequestParam String userId) throws Exception {
 
 		Blob blobImage = userEventsRepository.readImage(Integer.parseInt(userId));
+		String imgString = Base64.encodeBase64String((blobImage.getBytes(1, (int) blobImage.length())));
 
-		
-		 InputStream binaryStream = blobImage.getBinaryStream(1, blobImage.length());
-		 
-		 int ch; char[] charArray = new char[1000000]; int i = 0; while ((ch =
-		 binaryStream.read()) != -1) { charArray[i] = (char) ch; i++; }
-		
-
-		String str = charArray.toString();
-
-		byte[] bdata = str.getBytes();
-
-		model.addAttribute("binaryData", bdata);
+		model.addAttribute("binaryData", imgString);
 		model.addAttribute("message", "Image retrieved from DB.");
-		
+
 		return new ModelAndView("RenderImage");
 	}
 
 	@PostMapping(path = "/approveRecord")
 	public ModelAndView approveRecord(Model model, @RequestParam String userId) {
-		
+
 		int count = userEventsRepository.updateApprovedStatus("Approved", Integer.parseInt(userId));
-		
+
 		if (count > 0) {
-			
-			List<UserEventsEntity> allUsers = (List<UserEventsEntity>)userEventsRepository.findAll();
+
+			List<UserEventsEntity> allUsers = (List<UserEventsEntity>) userEventsRepository.findAll();
 			model.addAttribute("allUsersList", allUsers);
 			model.addAttribute("message", "Record Status Updated Successfully !!");
 			model.addAttribute("firstName", "Admin");
@@ -164,10 +147,11 @@ public class GuestBookController {
 			return new ModelAndView("SystemError");
 		}
 	}
-	
+
 	@PostMapping(path = "/updateUser")
-	public ModelAndView updateUser(Model model, @RequestParam String id, @RequestParam String userName, @RequestParam String eventName,
-			@RequestParam String eventDate, @RequestParam String notes, @RequestParam String fileName) {
+	public ModelAndView updateUser(Model model, @RequestParam String id, @RequestParam String userName,
+			@RequestParam String eventName, @RequestParam String eventDate, @RequestParam String notes,
+			@RequestParam String fileName) {
 
 		Date date = null;
 		try {
@@ -189,82 +173,80 @@ public class GuestBookController {
 		}
 
 	}
-	
+
 	@RequestMapping(path = "/addEvent")
-	public ModelAndView addEvent(Model model, @RequestParam String userId, @RequestParam String eventName, @RequestParam String eventDate,
-			@RequestParam String notes, @RequestParam("img") MultipartFile img, @RequestParam String firstName, @RequestParam String lastName) {
-		
+	public ModelAndView addEvent(Model model, @RequestParam String userId, @RequestParam String eventName,
+			@RequestParam String eventDate, @RequestParam String notes, @RequestParam("img") MultipartFile img,
+			@RequestParam String firstName, @RequestParam String lastName) {
+
 		UserEventsEntity uEvents = new UserEventsEntity();
-		
+
 		uEvents.setUserName(userId);
 		uEvents.setEventName(eventName);
-		
+
 		try {
-			Date date=new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
 			uEvents.setEventDate(date);
 			uEvents.setNotes(notes);
-			
-			if(img.getSize() > 0) {
-				
+
+			if (img.getSize() > 0) {
+
 				Blob bImage = null;
-						
-				 bImage = new SerialBlob(img.getBytes());
-				
+
+				bImage = new SerialBlob((img.getBytes()));
+
 				uEvents.setPicByte(bImage);
 				uEvents.setFileName(img.getOriginalFilename());
-			}
-			else {
+			} else {
 				uEvents.setPicByte(null);
 				uEvents.setFileName(null);
 			}
-			
+
 			uEvents.setIsApproved("Not Approved");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
+
 		userEventsRepository.save(uEvents);
-		
+
 		model.addAttribute("userMessage", "Event Posted Successfully !!");
-		
+
 		model.addAttribute("firstName", firstName);
 		model.addAttribute("lastName", lastName);
 		model.addAttribute("userName", userId);
-		
-		List<UserEventsEntity> allUserEvents = (List<UserEventsEntity>)userEventsRepository.fetchUserEvent(userId);
+
+		List<UserEventsEntity> allUserEvents = (List<UserEventsEntity>) userEventsRepository.fetchUserEvent(userId);
 		model.addAttribute("allUserEvents", allUserEvents);
-		
+
 		return new ModelAndView("UserDashboard");
 	}
-	
+
 	@PostMapping(path = "/validateUser")
-	public ModelAndView validateUser(Model model, @RequestParam String userName, 
-			@RequestParam String password) {
+	public ModelAndView validateUser(Model model, @RequestParam String userName, @RequestParam String password) {
 
 		GuestBookEntity ge = guestBookRepository.fetchUser(userName);
 
 		if (null != ge && ge.getPassword().equals(password)) {
 
-			if(!userName.equals("admin")) {
+			if (!userName.equals("admin")) {
 				@SuppressWarnings("unchecked")
-				List<UserEventsEntity> allEvents = (List<UserEventsEntity>)userEventsRepository.fetchUserEvent(userName);
+				List<UserEventsEntity> allEvents = (List<UserEventsEntity>) userEventsRepository
+						.fetchUserEvent(userName);
 				model.addAttribute("allUserEvents", allEvents);
-				
+
 				model.addAttribute("firstName", ge.getFirstName());
 				model.addAttribute("lastName", ge.getLastName());
 				model.addAttribute("userName", userName);
-				
+
 				return new ModelAndView("UserDashboard");
-			}
-			else {
-				List<UserEventsEntity> allUsers = (List<UserEventsEntity>)userEventsRepository.findAll();
+			} else {
+				List<UserEventsEntity> allUsers = (List<UserEventsEntity>) userEventsRepository.findAll();
 				model.addAttribute("allUsersList", allUsers);
 				model.addAttribute("firstName", "Admin");
-				
+
 				return new ModelAndView("dashboard");
 			}
-		}
-		else if (null != ge)
+		} else if (null != ge)
 			return new ModelAndView("loginError");
 		else
 			return new ModelAndView("systemError");
