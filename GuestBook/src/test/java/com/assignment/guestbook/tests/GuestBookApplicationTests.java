@@ -35,13 +35,13 @@ class GuestBookApplicationTests {
 	private static final Logger LOGGER = LogManager.getLogger(GuestBookApplicationTests.class);
 
 	/**
-	 * Method test1, This JUNIT Method is used to Test the functionality of New User
+	 * Method addUserTest, This JUNIT Method is used to Test the functionality of New User
 	 * Registration
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test1() throws Exception {
+	void addUserTest() throws Exception {
 
 		LOGGER.info("About to run JUNIT Test for New User Registartion");
 		String testString = "firstName=TestUser&lastName=01&age=30&userName=test001&password=12345&address=Dummy Address Line 1";
@@ -55,13 +55,13 @@ class GuestBookApplicationTests {
 	}
 
 	/**
-	 * Method test2, This JUNIT Method is used to Test the functionality of Create
+	 * Method createUserTest, This JUNIT Method is used to Test the functionality of Create
 	 * New User Event functionality
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test2() throws Exception {
+	void createUserTest() throws Exception {
 
 		LOGGER.info("About to run JUNIT Test for Creating New User Event");
 		String testString = "userId=test001&eventName=FirstTestEvent&eventDate=2020-05-12&notes=Test Notes...&firstName=TestUser&lastName=01";
@@ -75,13 +75,13 @@ class GuestBookApplicationTests {
 	}
 
 	/**
-	 * Method test3, This JUNIT Method is used to Test the functionality of Update
+	 * Method updateUserEventTest, This JUNIT Method is used to Test the functionality of Update
 	 * Existing User Event functionality
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test3() throws Exception {
+	void updateUserEventTest() throws Exception {
 
 		LOGGER.info("About to run JUNIT Test for Update User Event");
 		String testString = "id=1&userName=test001&eventName=FirstTestEvent_UPDATED&eventDate=2020-05-12&notes=Test Notes UPDATED..&fileName=TestImage_01";
@@ -95,13 +95,13 @@ class GuestBookApplicationTests {
 	}
 
 	/**
-	 * Method test4, This JUNIT Method is used to Test the functionality of Approve
-	 * User Event functionality
+	 * Method provideConsentUserEventTest, This JUNIT Method is used to Test the functionality of Approve
+	 * User Event
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test4() throws Exception {
+	void provideConsentUserEventTest() throws Exception {
 
 		String testString = "userId=1";
 
@@ -114,17 +114,17 @@ class GuestBookApplicationTests {
 	}
 
 	/**
-	 * Method test5, This JUNIT Method is used to Test the functionality of Delete
+	 * Method removeUserEventTest, This JUNIT Method is used to Test the functionality of Delete
 	 * User Event functionality
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test5() throws Exception {
+	void removeUserEventTest() throws Exception {
 
 		LOGGER.info("About to run JUNIT Test for Delete User Event");
 
-		String testString = "userId=1";
+		String testString = "userId=4";
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/guestbook/deleteUser?" + testString)
 				.accept(MediaType.APPLICATION_JSON).content(testString).contentType(MediaType.APPLICATION_JSON);
@@ -135,12 +135,12 @@ class GuestBookApplicationTests {
 	}
 	
 	/**
-	 * Method test6, JUNIT Test for testing the Negative Scenario related to New User Registartion
+	 * Method negativeScenarioNewAccountUserRegistartionTest, JUNIT Test for testing the Negative Scenario related to New User Registartion
 	 * 
 	 * @return void
 	 */
 	@Test
-	void test6() throws Exception {
+	void negativeScenarioNewAccountUserRegistartionTest() throws Exception {
 
 		LOGGER.info("About to run JUNIT Test for checking negative scenario for new user registartion by passing faulty Request Parameter String");
 
