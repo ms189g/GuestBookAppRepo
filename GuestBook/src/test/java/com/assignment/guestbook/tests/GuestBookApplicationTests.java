@@ -124,7 +124,7 @@ class GuestBookApplicationTests {
 
 		LOGGER.info("About to run JUNIT Test for Delete User Event");
 
-		String testString = "userId=4";
+		String testString = "userId=1";
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/guestbook/deleteUser?" + testString)
 				.accept(MediaType.APPLICATION_JSON).content(testString).contentType(MediaType.APPLICATION_JSON);
@@ -132,5 +132,25 @@ class GuestBookApplicationTests {
 
 		MockHttpServletResponse response = result.getResponse();
 		assertEquals(200, response.getStatus());
+	}
+	
+	/**
+	 * Method test6, JUNIT Test for testing the Negative Scenario related to New User Registartion
+	 * 
+	 * @return void
+	 */
+	@Test
+	void test6() throws Exception {
+
+		LOGGER.info("About to run JUNIT Test for checking negative scenario for new user registartion by passing faulty Request Parameter String");
+
+		String testString = "FAULTY_REQUEST_STRING...";
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/guestbook/registerUser?" + testString)
+				.accept(MediaType.APPLICATION_JSON).content(testString).contentType(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+		MockHttpServletResponse response = result.getResponse();
+		assertEquals(400, response.getStatus());	//CHECK for Response Received as 400 BAD REQUEST
 	}
 }
