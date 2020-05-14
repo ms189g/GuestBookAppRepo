@@ -8,14 +8,36 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.assignment.guestbook.entities.GuestBookEntity;
 
+/**
+ * GuestBookRepository, Repository class for GuestBookEntity
+ * @author Manish
+ *
+ */
 public interface GuestBookRepository extends CrudRepository<GuestBookEntity, Integer> {
 
+	/**
+	 * @param user_id
+	 * @return
+	 */
 	@Query("SELECT a FROM GuestBookEntity a WHERE a.userName=:user_id")
 	GuestBookEntity fetchUser(@Param("user_id") String user_id);
 	
+	/**
+	 * @param user_id
+	 * @return
+	 */
 	@Query("SELECT a FROM GuestBookEntity a WHERE a.id=:user_id")
 	GuestBookEntity fetchUserById(@Param("user_id") Integer user_id);
 	
+	/**
+	 * @param user_id
+	 * @param fName
+	 * @param lName
+	 * @param uName
+	 * @param addr
+	 * @param ag
+	 * @return
+	 */
 	@Transactional
 	@Modifying
 	@Query("UPDATE GuestBookEntity set firstName=:fName, lastName=:lName,"

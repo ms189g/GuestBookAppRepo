@@ -12,18 +12,40 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.assignment.guestbook.entities.UserEventsEntity;
 
+/**
+ * UserEventsRepository, Interface for UserEventsEntity
+ * @author Manish
+ *
+ */
 public interface UserEventsRepository extends CrudRepository<UserEventsEntity, Integer> {
 
 	
-	 @Query("SELECT a FROM UserEventsEntity a WHERE a.userName=:user_id")
+	 /**
+	 * @param user_id
+	 * @return
+	 */
+	@Query("SELECT a FROM UserEventsEntity a WHERE a.userName=:user_id")
 	 List<UserEventsEntity> fetchUserEvent(@Param("user_id") String user_id);
 	 
-	 @Query("SELECT a FROM UserEventsEntity a WHERE a.id=:user_id")
+	 /**
+	 * @param user_id
+	 * @return
+	 */
+	@Query("SELECT a FROM UserEventsEntity a WHERE a.id=:user_id")
 	 UserEventsEntity fetchUserById(@Param("user_id") Integer user_id);
 	 
 	 @Query("SELECT a.picByte FROM UserEventsEntity a WHERE a.id=:user_id")
 	 Blob readImage(@Param("user_id") Integer user_id);
 		
+		/**
+		 * @param user_id
+		 * @param fName
+		 * @param lName
+		 * @param uName
+		 * @param note
+		 * @param fileName
+		 * @return
+		 */
 		@Transactional
 		@Modifying
 		@Query("UPDATE UserEventsEntity set userName=:fName, eventName=:lName,"
@@ -31,6 +53,11 @@ public interface UserEventsRepository extends CrudRepository<UserEventsEntity, I
 		Integer updateUserById(@Param("user_id") Integer user_id, @Param("fName") String fName, @Param("lName") String lName
 				,@Param("uName") Date uName, @Param("note") String note, @Param("ag") String fileName);
 		
+		/**
+		 * @param value
+		 * @param user_id
+		 * @return
+		 */
 		@Transactional
 		@Modifying
 		@Query("UPDATE UserEventsEntity set isApproved=:value WHERE id=:user_id")

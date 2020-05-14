@@ -3,13 +3,14 @@ package com.assignment.guestbook.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/*import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.Email;
-*/
+/**
+ * GuestBookEntity, Entity class for GUEST_BOOK_DETAILS table
+ */
+
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "GUEST_BOOK_DETAILS")
 public class GuestBookEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "GUEST_ID")
